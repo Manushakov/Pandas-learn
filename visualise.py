@@ -5,9 +5,12 @@ frame = pd.read_csv("nbaStats.csv")
 
 b = input("Введите название команды ")
 c = int(input("Введите год "))
+players = frame["Tm"].unique()
+years = frame["SeasonStart"].unique()
 
 
 def get_players(team_name, year):
+    team_name = team_name.upper()  # исключает синтаксическую ошибку
     result = frame.loc[(frame['Tm'] == team_name) & (frame['SeasonStart'] == year)]
     players_list = list(result["PlayerName"])
     result1 = result[["PlayerName", "PTS"]]
@@ -23,4 +26,9 @@ def get_players(team_name, year):
     return players_list
 
 
-print(get_players(b, c))
+if b.upper() not in players:
+    print("Данная команда не найдена")
+if c not in years:
+    print("Нет информации по данному сезону")
+else:
+    print(get_players(b, c))
